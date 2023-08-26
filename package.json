@@ -1,5 +1,5 @@
 {
-  "name": "ReactSharedElement",
+  "name": "reactsharedelement",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -14,22 +14,50 @@
     "e2e:test": "detox test -c ios.debug"
   },
   "dependencies": {
+    "@notifee/react-native": "^5.2.2",
+    "@react-native-async-storage/async-storage": "^1.15.14",
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/native": "^5.x",
+    "@react-navigation/stack": "^5.x",
+    "axios": "^0.24.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "native-base": "^3.4.13",
     "react": "17.0.2",
-    "react-native": "0.66.4"
+    "react-hook-form": "^7.23.0",
+    "react-native": "0.66.4",
+    "react-native-config": "^1.4.5",
+    "react-native-gesture-handler": "^2.12.1",
+    "react-native-keychain": "^8.1.1",
+    "react-native-linear-gradient": "^2.8.2",
+    "react-native-reanimated": "^3.4.2",
+    "react-native-safe-area-context": "^4.7.1",
+    "react-native-screens": "^3.24.0",
+    "react-native-svg": "^13.13.0",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/react-native": "^11.3.0",
+    "@types/jest": "^26.0.23",
     "@types/react-native": "^0.66.4",
     "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
     "babel-jest": "^26.6.3",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "detox": "^19.12.5",
     "eslint": "^7.14.0",
     "jest": ">=27.2.5",
     "metro-react-native-babel-preset": "^0.66.2",
     "prettier": "^2.5.1",
-    "typescript": "^4.4.4",
-    "react-test-renderer": "17.0.2"
+    "react-test-renderer": "17.0.2",
+    "typescript": "^4.4.4"
   },
   "resolutions": {
     "@types/react": "^17"

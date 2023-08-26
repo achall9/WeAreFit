@@ -1,11 +1,23 @@
 package com.reactsharedelement;
 
+import com.affirm.android.Affirm;
+import com.affirm.android.model.Checkout;
 import com.facebook.react.ReactActivity;
-import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
-import com.facebook.react.defaults.DefaultReactActivityDelegate;
+import com.facebook.react.bridge.Callback;
 
-public class MainActivity extends ReactActivity {
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+public class MainActivity extends ReactActivity implements Affirm.CheckoutCallbacks {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
@@ -13,20 +25,38 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "ReactSharedElement";
+    return "reactsharedelement";
   }
 
-  /**
-   * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
-   * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
-   * (aka React 18) with two boolean flags.
-   */
+  public static Callback affirmCallback;
+
+  public static void beginCheckout (Activity activity, Checkout checkout) {
+    Affirm.startCheckout(activity, checkout, false);
+  }
+
   @Override
-  protected ReactActivityDelegate createReactActivityDelegate() {
-    return new DefaultReactActivityDelegate(
-        this,
-        getMainComponentName(),
-        // If you opted-in for the New Architecture, we enable the Fabric Renderer.
-        DefaultNewArchitectureEntryPoint.getFabricEnabled());
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (Affirm.handleCheckoutData(this, requestCode, resultCode, data)) {
+      return;
+    }
+
+    super.onActivityResult(requestCode, resultCode, data);
+  }
+
+  @Override
+  public void onAffirmCheckoutError(@Nullable String message) {
+    System.out.println(message);
+    affirmCallback.invoke(message, null);
+  }
+
+  @Override
+  public void onAffirmCheckoutCancelled() {
+    System.out.println("cancelled");
+    affirmCallback.invoke("cancelled", null);
+  }
+
+  @Override
+  public void onAffirmCheckoutSuccess(@NonNull String token) {
+    affirmCallback.invoke(null, token);
   }
 }

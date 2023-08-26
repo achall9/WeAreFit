@@ -1,0 +1,13 @@
+{
+  "test-runner": "jest",
+  "runnerConfig": "e2e/config.json",
+  "configurations": {
+    "ios.debug": {
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/reactsharedelement.app",
+      "build": "xcodebuild -workspace ios/reactsharedelement.xcworkspace -configuration Debug -scheme reactsharedelement -sdk iphonesimulator -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "name": "iPhone SE (3rd generation)",
+      "id": "E8AECD36-1CDB-4BC4-80EC-0109D96EAE47"
+    }
+  }
+}

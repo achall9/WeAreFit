@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">ReactSharedElement</string>
+    <string name="app_name">reactsharedelement</string>
+    <string name="facebook_app_id">5346009522151569</string>
+    <string name="facebook_client_token">30747be92157c5b47d1f863e9d8b7061</string>
 </resources>
