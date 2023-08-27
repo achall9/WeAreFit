@@ -1,25 +1,38 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {DefaultTheme, NavigationContainer, NavigatorScreenParams} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {useColorScheme} from 'react-native';
 import Splash from 'screens/Splash';
 import Welcome from 'screens/Welcome';
-
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: 'white',
-  },
-};
+import DetailsScreen from 'screens/DetailsScreen';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
+import {getDefaultNormalizer} from '@testing-library/react-native';
 
 export type RootStackParamList = {
+  DetailsScreen: {
+    data: {
+      id: string;
+      image_url: string;
+      iconName: string;
+      title: string;
+      description: string;
+    };
+  };
   Welcome: undefined;
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
+const options = {
+  headerBackTitleVisible: false,
+  cardStyleInterpolator: ({current: {progress}}) => {
+    return {
+      cardStyle: {
+        opacity: progress,
+      },
+    };
+  },
+};
 const Navigation = () => {
   const scheme = useColorScheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +40,6 @@ const Navigation = () => {
 
   useEffect(() => {
     const bootstrap = async () => {
-      //track opened app count for engagement events like review requests
       const openedAppCount: number = Number(await AsyncStorage.getItem('OPENED_APP'));
       AsyncStorage.setItem('OPENED_APP', openedAppCount ? (openedAppCount + 1).toString() : '1');
 
@@ -37,18 +49,41 @@ const Navigation = () => {
     };
 
     bootstrap();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
-    // We haven't finished checking for the token yet
     return <Splash />;
   }
 
   return (
-    <NavigationContainer ref={navigation} theme={scheme === 'dark' ? theme : theme}>
-      <Stack.Navigator initialRouteName={'Welcome'} screenOptions={{headerShown: false}}>
+    <NavigationContainer>
+      <Stack.Navigator headerMode="none" initialRouteName={'Welcome'} screenOptions={{headerShown: false}}>
         <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen
+          name="DetailsScreen"
+          // options={() => options}
+          sharedElements={(route, otherRoute, showing) => {
+            const {data} = route.params;
+            return [
+              {
+                id: `item.${data.id}.image_url`,
+                animation: 'move',
+                resize: 'clip',
+              },
+              {
+                id: `item.${data.id}.title`,
+                animation: 'fade',
+                resize: 'clip',
+              },
+              {
+                id: `item.${data.id}.description`,
+                animation: 'fade',
+                resize: 'clip',
+              },
+            ];
+          }}
+          component={DetailsScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
