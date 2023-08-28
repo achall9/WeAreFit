@@ -6,7 +6,6 @@ import Splash from 'screens/Splash';
 import Welcome from 'screens/Welcome';
 import DetailsScreen from 'screens/DetailsScreen';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
-import {getDefaultNormalizer} from '@testing-library/react-native';
 
 export type RootStackParamList = {
   DetailsScreen: {
@@ -59,31 +58,7 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator headerMode="none" initialRouteName={'Welcome'} screenOptions={{headerShown: false}}>
         <Stack.Screen name="Welcome" component={Welcome} />
-        <Stack.Screen
-          name="DetailsScreen"
-          // options={() => options}
-          sharedElements={(route, otherRoute, showing) => {
-            const {data} = route.params;
-            return [
-              {
-                id: `item.${data.id}.image_url`,
-                animation: 'move',
-                resize: 'clip',
-              },
-              {
-                id: `item.${data.id}.title`,
-                animation: 'fade',
-                resize: 'clip',
-              },
-              {
-                id: `item.${data.id}.description`,
-                animation: 'fade',
-                resize: 'clip',
-              },
-            ];
-          }}
-          component={DetailsScreen}
-        />
+        <Stack.Screen name="DetailsScreen" options={() => options} component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

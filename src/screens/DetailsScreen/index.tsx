@@ -1,16 +1,19 @@
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {Box, Image, ScrollView, VStack} from 'native-base';
-import React from 'react';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {Box, Image, ScrollView, VStack, Pressable, Icon} from 'native-base';
+import React, {useRef} from 'react';
 import {RootStackParamList} from 'navigation';
 import {Dimensions} from 'react-native';
-import {SharedElement} from 'react-native-shared-element';
+import {SharedElement} from 'react-navigation-shared-element';
 import Label from 'components/Label';
 import {getDetailSharedElements} from 'screens/getDetailSharedElements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DetailsScreen = () => {
   const {params} = useRoute<RouteProp<RootStackParamList, 'DetailsScreen'>>();
   const {height} = Dimensions.get('window');
   const ITEM_HEIGHT = height * 0.5;
+  const buttonRef = useRef();
+  const {goBack} = useNavigation();
 
   return (
     <Box bgColor={'black'}>
@@ -25,18 +28,28 @@ const DetailsScreen = () => {
           alt={'banner'}
         />
       </SharedElement>
+      <Pressable
+        position={'absolute'}
+        marginTop={10}
+        marginLeft={2}
+        onPress={() => {
+          goBack();
+        }}
+        hitSlop={8}>
+        <MaterialCommunityIcons name="close" color="white" size={20} />
+      </Pressable>
       <VStack mt={5}>
         <VStack ml={5}>
-          {/* <SharedElement id={`item.${params.data.id}.title`}> */}
-          <Label sz={'3xlarge'} color={'white'}>
-            {params.data.title}
-          </Label>
-          {/* </SharedElement> */}
-          {/* <SharedElement id={`item.${params.data.id}.description`}> */}
-          <Label sz={'large'} color={'white'}>
-            {params.data.description}
-          </Label>
-          {/* </SharedElement> */}
+          <SharedElement id={`item.${params.data.id}.title`}>
+            <Label sz={'3xlarge'} color={'white'}>
+              {params.data.title}
+            </Label>
+          </SharedElement>
+          <SharedElement id={`item.${params.data.id}.description`}>
+            <Label sz={'large'} color={'white'}>
+              {params.data.description}
+            </Label>
+          </SharedElement>
         </VStack>
       </VStack>
       <ScrollView paddingLeft={5} paddingRight={5}>

@@ -3,8 +3,9 @@ import {Box, Stack, ScrollView, Image, Pressable, Text, View, ZStack, VStack, HS
 import React from 'react';
 import {data} from 'config';
 import Label from 'components/Label';
-import {SharedElement} from 'react-native-shared-element';
+import {SharedElement} from 'react-navigation-shared-element';
 import {Dimensions} from 'react-native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 const Welcome = () => {
   const {width} = Dimensions.get('screen');
@@ -50,13 +51,11 @@ const Welcome = () => {
             />
           </SharedElement>
 
-          <Box
-            style={{
-              position: 'absolute',
-              bottom: 20,
-              left: 10,
-            }}>
-            <Stack>
+          <Box position={'absolute'} bottom={5} left={2}>
+            <HStack>
+              <SharedElement id={`item.${item.id}.iconName`}>
+                <SimpleLineIcons size={40} color="white" name={item.iconName} />
+              </SharedElement>
               <VStack paddingLeft={2}>
                 <SharedElement id={`item.${item.id}.title`}>
                   <Label sz={'3xlarge'} color={'white'}>
@@ -69,7 +68,7 @@ const Welcome = () => {
                   </Label>
                 </SharedElement>
               </VStack>
-            </Stack>
+            </HStack>
           </Box>
         </Pressable>
       </Box>

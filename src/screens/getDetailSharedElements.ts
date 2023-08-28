@@ -5,21 +5,20 @@ export const getDetailSharedElements: SharedElementsComponentConfig = (
   otherRoute,
   showing
 ) => {
-  const {item} = route.params;
-  console.log("[-----]", item);
+  const {data} = route.params;
   return [
     {
-      id: `item.${item.id}.image_url`,
+      id: `item.${data.id}.image_url`,
       animation: 'move',
       resize: 'clip',
     },
     {
-      id: `item.${item.id}.title`,
+      id: `item.${data.id}.title`,
       animation: 'fade',
       resize: 'clip',
     },
     {
-      id: `item.${item.id}.description`,
+      id: `item.${data.id}.description`,
       animation: 'fade',
       resize: 'clip',
     },
