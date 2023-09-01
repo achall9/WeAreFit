@@ -1,13 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, NavigatorScreenParams} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {useColorScheme} from 'react-native';
 import Splash from 'screens/Splash';
-import Welcome from 'screens/Welcome';
-import DetailsScreen from 'screens/DetailsScreen';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
+import {MainStack, MainStackParamList} from './MainStack';
+import DetailsScreen from 'screens/DetailsScreen';
+import {getDetailSharedElements} from 'screens/getDetailSharedElements';
 
 export type RootStackParamList = {
+  MainStack: undefined | NavigatorScreenParams<MainStackParamList>;
   DetailsScreen: {
     data: {
       id: string;
@@ -17,21 +19,10 @@ export type RootStackParamList = {
       description: string;
     };
   };
-  Welcome: undefined;
 };
 
 const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
-const options = {
-  headerBackTitleVisible: false,
-  cardStyleInterpolator: ({current: {progress}}) => {
-    return {
-      cardStyle: {
-        opacity: progress,
-      },
-    };
-  },
-};
 const Navigation = () => {
   const scheme = useColorScheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -54,10 +45,22 @@ const Navigation = () => {
     return <Splash />;
   }
 
+  const options = {
+    headerBackTitleVisible: false,
+    headerShown: false,
+    cardStyleInterpolator: ({current: {progress}}) => {
+      return {
+        cardStyle: {
+          opacity: progress,
+        },
+      };
+    },
+  };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode="none" initialRouteName={'Welcome'} screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Welcome" component={Welcome} />
+      <Stack.Navigator headerMode="none" initialRouteName={'MainStack'} screenOptions={{headerShown: false}}>
+        <Stack.Screen name="MainStack" component={MainStack} options={{gestureEnabled: false}} />
         <Stack.Screen name="DetailsScreen" options={() => options} component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
